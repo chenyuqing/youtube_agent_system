@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.so
+*.egg-info/
+*.egg
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+.tox/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+.DS_Store
+*.swp
+*.swo
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+
+# Project specific
+assets/cache/
+assets/temp/
+bak/
+research_summary.txt
+scriptwriter_summary.txt
+rewritten_script.txt

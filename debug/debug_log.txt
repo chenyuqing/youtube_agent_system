@@ -1,0 +1,252 @@
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+错误: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 99, in <module>
+    report = agent.generate_research_report("最新AI技术发展")
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 65, in generate_research_report
+    response = openai.ChatCompletion.create(
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/venv/lib/python3.10/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+开始初始化 ResearchAgent...
+错误: module 'openai' has no attribute 'OpenAI'
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 89, in <module>
+    agent = ResearchAgent()
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 18, in __init__
+    self.client = openai.OpenAI(
+AttributeError: module 'openai' has no attribute 'OpenAI'
+
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+错误: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 100, in <module>
+    report = agent.generate_research_report("最新AI技术发展")
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 65, in generate_research_report
+    completion = openai.ChatCompletion.create(
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/venv/lib/python3.10/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+错误: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 99, in <module>
+    report = agent.generate_research_report("最新AI技术发展")
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 64, in generate_research_report
+    completion = openai.ChatCompletion.create(
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/venv/lib/python3.10/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+错误: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 99, in <module>
+    report = agent.generate_research_report("最新AI技术发展")
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 64, in generate_research_report
+    completion = openai.ChatCompletion.create(
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/venv/lib/python3.10/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+错误: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 99, in <module>
+    report = agent.generate_research_report("最新AI技术发展")
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 64, in generate_research_report
+    completion = openai.ChatCompletion.create(
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/venv/lib/python3.10/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+错误: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 99, in <module>
+    report = agent.generate_research_report("最新AI技术发展")
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 64, in generate_research_report
+    completion = openai.ChatCompletion.create(
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/venv/lib/python3.10/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+错误: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+Traceback (most recent call last):
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 99, in <module>
+    report = agent.generate_research_report("最新AI技术发展")
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/app/sdk/research_agent.py", line 64, in generate_research_report
+    completion = openai.ChatCompletion.create(
+  File "/Users/timchen/Documents/agents/strategy/youtube_agent_system/venv/lib/python3.10/site-packages/openai/lib/_old_api.py", line 39, in __call__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+开始初始化 ResearchAgent...
+初始化完成
+开始测试搜索功能...
+搜索结果已保存
+开始测试研究报告生成...
+研究报告已保存
