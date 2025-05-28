@@ -3,122 +3,748 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Multi-Agent System</title>
-    <!-- 原有的 style 内容保持不变 -->
+    <title>YouTube Agent System</title>
     <style>
-        /* 复制原有的所有样式内容 */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            /* background-image: url('assets/images/header.png'); */
+            /* background-size: cover; */
+            /* background-position: center; */
+            /* background-attachment: fixed; */ /* 使背景图片固定 */
+            min-height: 100vh; /* 确保body至少占满视口高度 */
+            display: flex;
+            flex-direction: column;
         }
-        /* ... 其他样式内容 ... */
+        
+        .header {
+            /* background-image: url('assets/images/header.png'); */
+            /* background-size: cover; */
+            /* background-position: center; */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色遮罩 */
+            z-index: 1;
+        }
+        .header h1 {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 2em auto;
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景，降低透明度 */
+            padding: 2em;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            flex-grow: 1; /* 使container占据剩余空间 */
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .agent-section {
+            margin-bottom: 2em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid #eee;
+        }
+        .agent-section:last-child {
+            border-bottom: none;
+        }
+        label {
+            display: block;
+            margin-bottom: .5em;
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .output {
+            margin-top: 1em;
+            padding: 1em;
+            background-color: #e9e9e9;
+            border-radius: 4px;
+            white-space: pre-wrap; /* Preserve formatting */
+            word-wrap: break-word;
+        }
+        footer {
+            text-align: center;
+            padding: 1em 0;
+            background-color: #333;
+            color: white;
+            width: 100%;
+            margin-top: auto;
+        }
+        .workflow-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2em;
+            flex-wrap: wrap;
+        }
+        .workflow-step {
+            padding: 8px 15px;
+            margin: 0 5px 10px 5px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .workflow-step.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .background-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/images/header.png');
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px) brightness(70%);
+            -webkit-filter: blur(4px) brightness(70%);
+            z-index: -1; /* 确保背景在内容之下 */
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>YouTube Multi-Agent System</h1>
+    <div class="background-blur"></div>
+    <header class="header">
+        <h1 style="text-align: center;">YouTube Agent System</h1>
+    </header>
 
-        <!-- API Lock Controls -->
-        <div class="api-lock-section" style="text-align: center; margin-bottom: 20px;">
-            <button id="apiLockButton" onclick="toggleApiLock()" class="api-lock-button">
-                <span id="lockIcon">🔓</span> API 已解锁
-            </button>
-            <div id="apiLockStatus" style="margin-top: 10px; font-style: italic; color: #666;"></div>
+    <div class="container">
+        <div class="workflow-nav">
+            <div class="workflow-step active" onclick="showTab('content-creation')">1. 内容创建</div>
+            <div class="workflow-step" onclick="showTab('production-prep')">2. 制作准备</div>
+            <div class="workflow-step" onclick="showTab('publishing')">3. 发布管理</div>
+            <div class="workflow-step" onclick="showTab('analytics')">4. 追踪优化</div>
         </div>
 
-        <button class="full-workflow-button" onclick="runFullWorkflow()">运行完整工作流 (Strategy → Research → Script → Review → Editor)</button>
+        <!-- 内容创建 Tab -->
+        <div id="content-creation" class="tab-content active">
+            <!-- Strategy Agent Section -->
+            <div class="agent-section">
+                <h2>Strategy Agent</h2>
+                <label for="strategy-source">数据来源：</label>
+                <select id="strategy-source">
+                    <option value="youtube">YouTube API</option>
+                    <option value="news">新闻 API</option>
+                </select>
+                <label for="strategy-market">目标市场：</label>
+                <select id="strategy-market" onchange="toggleRegionOptions()">
+                    <option value="none">请选择</option>
+                    <option value="primary">主要市场</option>
+                    <option value="secondary">次要市场</option>
+                    <option value="other">其他市场</option>
+                </select>
 
-        <hr style="margin: 40px 0;">
+                <div id="primary-market-options" style="display: none; margin-top: 10px;">
+                    <label for="strategy-region-primary">选择地区：</label>
+                    <select id="strategy-region-primary">
+                        <option value="CN">中国</option>
+                        <option value="US">美国</option>
+                    </select>
+                </div>
 
-        <!-- Strategy Agent Section -->
-        <div class="agent-section" id="strategy-section">
-            <h2>1. 策略生成 (Strategy Agent)</h2>
-            <label for="strategyTopic">主题:</label>
-            <input type="text" id="strategyTopic" placeholder="例如：人工智能发展趋势" value="人工智能发展趋势">
+                <div id="secondary-market-options" style="display: none; margin-top: 10px;">
+                    <label for="strategy-region-secondary">选择地区：</label>
+                    <select id="strategy-region-secondary">
+                        <option value="EU">欧盟</option>
+                        <option value="JP">日本</option>
+                        <option value="KR">韩国</option>
+                    </select>
+                </div>
+                <label for="strategy-topic">选题关键词：</label>
+                <input type="text" id="strategy-topic" placeholder="输入关键词获取选题建议">
+                <label for="strategy-time-range">时间范围：</label>
+                <select id="strategy-time-range">
+                    <option value="MONTHS_3">近3个月</option>
+                    <option value="YEAR_1">近1年</option>
+                    <option value="YEARS_2">近2年</option>
+                </select>
+                <button onclick="callStrategyAgent()">获取选题建议</button>
+                <div class="output" id="strategy-output"></div>
+            </div>
 
-            <label for="strategyTimeRange">时间范围:</label>
-            <select id="strategyTimeRange" style="margin-bottom: 15px;">
-                <option value="MONTHS_3">近3个月</option>
-                <option value="YEAR_1">近1年</option>
-                <option value="YEARS_2">近2年</option>
-            </select>
+            <!-- Research Agent Section -->
+            <div class="agent-section">
+                <h2>Research Agent</h2>
+                <label for="research-topic">研究主题：</label>
+                <input type="text" id="research-topic" placeholder="输入研究主题">
+                <label for="research-source">数据源选择：</label>
+                <select id="research-source">
+                    <option value="youtube" selected>YouTube 趋势</option>
+                    <option value="news">新闻媒体</option>
+                    <option value="academic">学术资源</option>
+                    <option value="social">社交媒体</option>
+                </select>
+                <label for="research-time-range">时间范围：</label>
+                <select id="research-time-range">
+                    <option value="MONTHS_12">近12个月</option>
+                    <option value="YEARS_2">近2年</option>
+                    <option value="YEARS_5">近5年</option>
+                    <option value="ALL">不限</option>
+                </select>
+                <button onclick="callResearchAgent()">生成研究报告</button>
+                <div class="output" id="research-output"></div>
+            </div>
 
-            <label for="strategySource">选题来源:</label>
-            <select id="strategySource" onchange="handleSourceChange()">
-                <option value="news">新闻网站 (NewsAPI)</option>
-                <option value="youtube">YouTube 趋势视频</option>
-            </select>
+            <!-- Scriptwriter Agent Section -->
+            <div class="agent-section">
+                <h2>Scriptwriter Agent</h2>
+                <label for="script-topic">脚本主题：</label>
+                <input type="text" id="script-topic" placeholder="输入脚本主题">
+                <label for="script-length">视频时长：</label>
+                <select id="script-length">
+                    <option value="short">&lt;10 分钟</option>
+                    <option value="medium">10-15 分钟</option>
+                    <option value="long">&gt;15 分钟</option>
+                </select>
+                <label for="script-style">内容风格：</label>
+                <select id="script-style">
+                    <option value="educational">教育型</option>
+                    <option value="entertaining">娱乐型</option>
+                    <option value="tutorial">教程型</option>
+                    <option value="vlog">Vlog 型</option>
+                </select>
+                <label for="script-template">参考模板：</label>
+                <select id="script-template">
+                    <option value="none">不使用模板</option>
+                    <option value="catl_scriptwriter.txt">宁德时代模板</option>
+                </select>
+                <button onclick="callScriptwriterAgent()">生成脚本</button>
+                <div class="output" id="script-output"></div>
+            </div>
 
-            <!-- 原有的其他内容和表单元素保持不变 -->
-            <!-- ... -->
-
-            <button onclick="runStrategy()">生成选题策略</button>
-            <div id="strategyLoading" class="loading" style="display: none;">正在生成中，请稍候...</div>
-            <div class="output-container">
-                <div id="strategyOutput" class="output-area"></div>
-                <button class="copy-button" onclick="copyText('strategyOutput')">复制</button>
+            <!-- Review Agent Section -->
+            <div class="agent-section">
+                <h2>Review Agent</h2>
+                <label for="review-script">脚本内容：</label>
+                <textarea id="review-script" rows="5" placeholder="粘贴需要审查的脚本内容"></textarea>
+                <label for="review-focus">审查重点：</label>
+                <select id="review-focus" multiple>
+                    <option value="accuracy" selected>内容准确性</option>
+                    <option value="engagement">观众参与度</option>
+                    <option value="seo">SEO 优化</option>
+                    <option value="clarity">表达清晰度</option>
+                </select>
+                <button onclick="callReviewAgent()">审查脚本</button>
+                <div class="output" id="review-output"></div>
+                <button id="copy-review-button" style="margin-top: 10px; display: none;" onclick="copyReviewToEditor()">复制到Editor Assistant</button>
             </div>
         </div>
 
-        <!-- 其他部分（Research Agent、Scriptwriter Agent等）保持不变 -->
-        <!-- ... -->
+        <!-- 制作准备 Tab -->
+        <div id="production-prep" class="tab-content">
+            <!-- Editor Assistant Section -->
+            <div class="agent-section">
+                <h2>Editor Assistant</h2>
+                <label for="editor-script">脚本内容：</label>
+                <textarea id="editor-script" rows="5" placeholder="粘贴需要编辑建议的脚本内容"></textarea>
+                <label for="editor-style">剪辑风格：</label>
+                <select id="editor-style">
+                    <option value="dynamic">动态快节奏</option>
+                    <option value="cinematic">电影感</option>
+                    <option value="minimal">简约</option>
+                    <option value="vlog">Vlog 风格</option>
+                </select>
+                <label for="editor-format">导出格式：</label>
+                <select id="editor-format">
+                    <option value="fcpxml">Final Cut Pro XML</option>
+                    <option value="premiere">Premiere Pro</option>
+                    <option value="davinci">DaVinci Resolve</option>
+                </select>
+                <button onclick="callEditorAgent()">获取剪辑建议</button>
+                <div class="output" id="editor-output"></div>
+            </div>
 
+            <!-- Thumbnail Agent Section -->
+            <div class="agent-section">
+                <h2>Thumbnail Agent</h2>
+                <label for="thumbnail-title">视频标题：</label>
+                <input type="text" id="thumbnail-title" placeholder="输入视频标题">
+                <label for="thumbnail-style">缩略图风格：</label>
+                <select id="thumbnail-style">
+                    <option value="bold">大胆鲜明</option>
+                    <option value="minimal">简约</option>
+                    <option value="emotional">情感化</option>
+                    <option value="question">问题式</option>
+                </select>
+                <label for="thumbnail-elements">包含元素：</label>
+                <select id="thumbnail-elements" multiple>
+                    <option value="text" selected>文字</option>
+                    <option value="face">人脸</option>
+                    <option value="object">主体物品</option>
+                    <option value="graphic">图形元素</option>
+                </select>
+                <button onclick="callThumbnailAgent()">生成缩略图方案</button>
+                <div class="output" id="thumbnail-output"></div>
+            </div>
+        </div>
+
+        <!-- 发布管理 Tab -->
+        <div id="publishing" class="tab-content">
+            <!-- Publishing Agent Section -->
+            <div class="agent-section">
+                <h2>Publishing Agent</h2>
+                <label for="publishing-title">视频标题：</label>
+                <input type="text" id="publishing-title" placeholder="输入视频标题">
+                <label for="publishing-description">视频描述：</label>
+                <textarea id="publishing-description" rows="5" placeholder="输入视频描述"></textarea>
+                <label for="publishing-tags">标签（用逗号分隔）：</label>
+                <input type="text" id="publishing-tags" placeholder="标签1, 标签2, 标签3">
+                <label for="publishing-schedule">发布时间：</label>
+                <select id="publishing-schedule">
+                    <option value="now">立即发布</option>
+                    <option value="optimal">最佳时间（由系统推荐）</option>
+                    <option value="custom">自定义时间</option>
+                </select>
+                <div id="custom-time-container" style="display:none;">
+                    <input type="datetime-local" id="custom-publish-time">
+                </div>
+                <button onclick="callPublishingAgent()">优化发布设置</button>
+                <div class="output" id="publishing-output"></div>
+            </div>
+        </div>
+
+        <!-- 追踪优化 Tab -->
+        <div id="analytics" class="tab-content">
+            <!-- Analytics Agent Section -->
+            <div class="agent-section">
+                <h2>Analytics Agent</h2>
+                <label for="analytics-video-id">视频链接：</label>
+                <input type="text" id="analytics-video-id" placeholder="输入YouTube视频链接">
+                <label for="analytics-timeframe">分析时间范围：</label>
+                <select id="analytics-timeframe">
+                    <option value="7days">过去7天</option>
+                    <option value="28days">过去28天</option>
+                    <option value="90days">过去90天</option>
+                    <option value="lifetime">全部时间</option>
+                </select>
+                <label for="analytics-metrics">关注指标：</label>
+                <select id="analytics-metrics" multiple>
+                    <option value="views" selected>观看次数</option>
+                    <option value="watchTime">观看时长</option>
+                    <option value="retention">观众留存率</option>
+                    <option value="engagement">互动率</option>
+                    <option value="demographics">观众人口统计</option>
+                </select>
+                <button onclick="callAnalyticsAgent()">获取分析报告</button>
+                <div class="output" id="analytics-output"></div>
+            </div>
+        </div>
     </div>
 
+    <footer>
+        <p>&copy; 2024 YouTube Agent System</p>
+    </footer>
+
     <script>
-        const API_BASE_URL = 'http://127.0.0.1:8000';
+        const API_BASE_URL = 'http://localhost:8000'; // 如果您的FastAPI运行在不同端口，请调整
 
-        // 保留原有的所有JavaScript函数和代码
-        // 更新 runStrategy 函数以包含时间范围参数
-        async function runStrategy() {
-            showLoading('strategyLoading');
-            setOutput('strategyOutput', '');
+        // 标签切换功能
+        function showTab(tabId) {
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // 显示选中的标签内容
+            document.getElementById(tabId).classList.add('active');
+            // 更新导航样式
+            document.querySelectorAll('.workflow-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            // 找到并激活对应的导航项
+            document.querySelector(`.workflow-step[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // 自定义时间选择显示/隐藏
+        document.getElementById('publishing-schedule').addEventListener('change', function() {
+            const customTimeContainer = document.getElementById('custom-time-container');
+            if (this.value === 'custom') {
+                customTimeContainer.style.display = 'block';
+            } else {
+                customTimeContainer.style.display = 'none';
+            }
+        });
+
+        async function callApi(endpoint, method = 'POST', body = null) {
+            const outputElement = document.getElementById(endpoint.substring(1) + '-output');
+            outputElement.textContent = '加载中...';
             try {
-                const topic = document.getElementById('strategyTopic').value.trim();
-                if (!topic) {
-                    throw new Error('请输入主题');
-                }
-
-                const source = document.getElementById('strategySource').value;
-                const timeRange = document.getElementById('strategyTimeRange').value;
-                let requestBody = { 
-                    topic: topic, 
-                    source: source,
-                    time_range: timeRange
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 };
-
-                // 其他参数处理保持不变
-                if (source === 'news') {
-                    // ... news source 相关代码 ...
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    outputElement.textContent = `错误: ${errorData.detail || '未知错误'}`;
+                    console.error('API请求错误:', errorData);
+                    return;
+                }
+                const data = await response.json();
+                
+                // 根据不同的endpoint处理不同的响应字段
+                let content = '';
+                if (endpoint === '/strategy') {
+                    content = data.recommendation || '';
+                } else if (endpoint === '/research') {
+                    content = data.report || '';
+                } else if (endpoint === '/script') {
+                    content = data.script || '';
+                    // 自动填充到Review Agent
+                    if (data.script) {
+                        document.getElementById('review-script').value = data.script;
+                    }
+                } else if (endpoint === '/review') {
+                    content = data.revised_script || '';
+                    // 显示复制按钮
+                    if (data.revised_script) {
+                        document.getElementById('copy-review-button').style.display = 'block';
+                    }
+                } else if (endpoint === '/editor') {
+                    // 处理Editor Agent的复杂响应
+                    if (data.edited_script) {
+                        content = '编辑后的脚本:\n' + data.edited_script + '\n\n';
+                        // 自动填充到Thumbnail Agent
+                        const scriptExcerpt = data.edited_script.split('\n')[0] || '';
+                        document.getElementById('thumbnail-title').value = scriptExcerpt;
+                    }
+                    if (data.b_roll_suggestions) {
+                        content += 'B-Roll建议:\n' + data.b_roll_suggestions + '\n\n';
+                    }
+                    if (data.visual_effects) {
+                        content += '视觉效果建议:\n' + data.visual_effects;
+                    }
+                } else if (endpoint === '/thumbnail') {
+                    // 处理Thumbnail Agent的复杂响应
+                    if (data.design) {
+                        content = '缩略图设计:\n' + data.design + '\n\n';
+                    }
+                    if (data.asset_suggestions && Array.isArray(data.asset_suggestions)) {
+                        content += '素材建议:\n' + data.asset_suggestions.join('\n');
+                    }
+                } else if (endpoint === '/publish/seo') {
+                    if (data.seo_metadata) {
+                        content = data.seo_metadata;
+                    } else {
+                        content = data.result || '';
+                    }
+                } else if (endpoint === '/analytics/performance') {
+                    if (data.performance_data) {
+                        content = data.performance_data;
+                    } else {
+                        content = data.analysis || '';
+                    }
                 } else {
-                    // ... youtube source 相关代码 ...
+                    // 如果没有匹配的字段，尝试显示整个响应
+                    content = JSON.stringify(data, null, 2);
                 }
-
-                console.log(`[Strategy] Source: ${source}, Time Range: ${timeRange}`);
-
-                const apiLockStatus = await checkApiLockStatus();
-                if (apiLockStatus) {
-                    throw new Error('API 当前处于锁定状态，请先解锁');
-                }
-
-                const data = await callApi('/strategy', 'POST', requestBody);
-                currentStrategyRecommendation = data.recommendation;
-                setOutput('strategyOutput', currentStrategyRecommendation);
-                document.getElementById('researchQuery').value = `请根据以下选题建议生成研究报告：\n${currentStrategyRecommendation.split('\n')[0]}`;
-                document.getElementById('scriptTopicTitle').value = currentStrategyRecommendation.split('\n')[0].replace('1. 标题建议：', '').trim();
+                
+                // 使用pre标签并直接设置innerHTML
+                outputElement.innerHTML = `<pre style="white-space: pre-wrap; word-wrap: break-word;">${content}</pre>`;
             } catch (error) {
-                setOutput('strategyOutput', `错误: ${error.message}`);
-            } finally {
-                hideLoading('strategyLoading');
+                console.error(`调用 ${endpoint} 出错:`, error);
+                outputElement.textContent = `错误: ${error.message}`;
             }
         }
 
-        // 其他原有的JavaScript函数保持不变
-        // ...
+        function callStrategyAgent() {
+            const source = document.getElementById('strategy-source').value;
+            const market = document.getElementById('strategy-market').value;
+            let region = '';
+            if (market === 'primary') {
+                region = document.getElementById('strategy-region-primary').value;
+            } else if (market === 'secondary') {
+                region = document.getElementById('strategy-region-secondary').value;
+            } else if (market === 'other') {
+                region = 'other'; // 或者根据需要设置一个默认值或让用户输入
+            }
+            const topicKeywords = document.getElementById('strategy-topic').value;
+            const timeRange = document.getElementById('strategy-time-range').value;
+            
+            if (!topicKeywords) {
+                alert('请输入关键词获取选题建议。');
+                return;
+            }
+            
+            callApi('/strategy', 'POST', { 
+                topic: topicKeywords, 
+                source: source,
+                region: region, // 直接使用选择的地区代码
+                time_range: timeRange
+            });
+        }
 
+        function toggleRegionOptions() {
+            const marketSelect = document.getElementById('strategy-market');
+            const primaryOptionsDiv = document.getElementById('primary-market-options');
+            const secondaryOptionsDiv = document.getElementById('secondary-market-options');
+            
+            primaryOptionsDiv.style.display = 'none';
+            secondaryOptionsDiv.style.display = 'none';
+
+            if (marketSelect.value === 'primary') {
+                primaryOptionsDiv.style.display = 'block';
+            } else if (marketSelect.value === 'secondary') {
+                secondaryOptionsDiv.style.display = 'block';
+            }
+        }
+
+        function callResearchAgent() {
+            const topic = document.getElementById('research-topic').value;
+            const source = document.getElementById('research-source').value;
+            const timeRange = document.getElementById('research-time-range').value;
+
+            if (!topic) {
+                alert('请输入研究主题。');
+                return;
+            }
+
+            let monthsBack = 0;
+            switch (timeRange) {
+                case 'MONTHS_12':
+                    monthsBack = 12;
+                    break;
+                case 'YEARS_2':
+                    monthsBack = 24;
+                    break;
+                case 'YEARS_5':
+                    monthsBack = 60;
+                    break;
+                case 'ALL':
+                    monthsBack = 0; // 0 或其他特殊值表示不限制时间，由后端处理
+                    break;
+                default:
+                    monthsBack = 12; // 默认值，与后端保持一致
+            }
+
+            callApi('/research', 'POST', {
+                topic: topic,
+                source: source,
+                time_range: monthsBack // 将转换后的月份数传递给后端
+            }, 'research-output');
+        }
+
+        function callScriptwriterAgent() {
+            const topic = document.getElementById('script-topic').value;
+            const length = document.getElementById('script-length').value;
+            const style = document.getElementById('script-style').value;
+            const template = document.getElementById('script-template').value;
+            
+            if (!topic) {
+                alert('请输入脚本主题。');
+                return;
+            }
+            callApi('/script', 'POST', { 
+                topic_title: topic, 
+                research_summary: document.getElementById('research-output').innerText || `关于${topic}的研究`, 
+                duration: length, 
+                style: style,
+                template: template !== 'none' ? template : ''
+            });
+        }
+
+        function callReviewAgent() {
+            const scriptContent = document.getElementById('review-script').value;
+            const focusSelect = document.getElementById('review-focus');
+            const selectedFocus = Array.from(focusSelect.selectedOptions).map(option => option.value);
+            const style = selectedFocus.length > 0 ? selectedFocus.join(',') : "accuracy";
+            
+            if (!scriptContent) {
+                alert('请输入需要审查的脚本内容。');
+                return;
+            }
+            callApi('/review', 'POST', { script_text: scriptContent, style: style });
+        }
+        
+        function copyReviewToEditor() {
+            const reviewOutput = document.getElementById('review-output').innerText;
+            if (reviewOutput) {
+                document.getElementById('editor-script').value = reviewOutput;
+                // 切换到Editor Assistant标签
+                showTab('editing');
+            }
+        }
+
+        function callEditorAgent() {
+            const scriptContent = document.getElementById('editor-script').value;
+            const style = document.getElementById('editor-style').value;
+            const format = document.getElementById('editor-format').value;
+            
+            if (!scriptContent) {
+                alert('请输入需要编辑建议的脚本内容。');
+                return;
+            }
+            callApi('/editor', 'POST', { 
+                script_segment: scriptContent,
+                style: style
+            });
+        }
+
+        function callThumbnailAgent() {
+            const title = document.getElementById('thumbnail-title').value;
+            const style = document.getElementById('thumbnail-style').value;
+            const elementsSelect = document.getElementById('thumbnail-elements');
+            const selectedElements = Array.from(elementsSelect.selectedOptions).map(option => option.value);
+            
+            if (!title) {
+                alert('请输入视频标题。');
+                return;
+            }
+            callApi('/thumbnail', 'POST', { 
+                title: title, 
+                style: style, 
+                script_excerpt: `视频标题：${title}，风格：${style}`,
+                elements: selectedElements.join(',')
+            });
+        }
+
+        function callPublishingAgent() {
+            const title = document.getElementById('publishing-title').value;
+            const description = document.getElementById('publishing-description').value;
+            const tags = document.getElementById('publishing-tags').value.split(',').map(tag => tag.trim());
+            const scheduleType = document.getElementById('publishing-schedule').value;
+            let publishTime = null;
+            
+            if (scheduleType === 'custom') {
+                publishTime = document.getElementById('custom-publish-time').value;
+            }
+            
+            if (!title || !description) {
+                alert('请输入视频标题和描述。');
+                return;
+            }
+            
+            callApi('/publish/seo', 'POST', { 
+                title: title, 
+                description: description, 
+                transcript: description, // 使用描述作为临时文本
+                category: "Education",
+                tags: tags,
+                schedule_type: scheduleType,
+                publish_time: publishTime
+            });
+        }
+
+        function callAnalyticsAgent() {
+            const videoLink = document.getElementById('analytics-video-id').value;
+            const timeframe = document.getElementById('analytics-timeframe').value;
+            const metricsSelect = document.getElementById('analytics-metrics');
+            const selectedMetrics = Array.from(metricsSelect.selectedOptions).map(option => option.value);
+            
+            if (!videoLink) {
+                alert('请输入YouTube视频链接。');
+                return;
+            }
+            
+            // 从链接中提取视频ID
+            let videoId = videoLink;
+            if (videoLink.includes('youtube.com/watch?v=')) {
+                videoId = videoLink.split('v=')[1];
+                const ampersandPosition = videoId.indexOf('&');
+                if (ampersandPosition !== -1) {
+                    videoId = videoId.substring(0, ampersandPosition);
+                }
+            } else if (videoLink.includes('youtu.be/')) {
+                videoId = videoLink.split('youtu.be/')[1];
+            }
+            
+            // 计算日期范围
+            let startDate = null;
+            let endDate = null;
+            
+            const today = new Date();
+            endDate = today.toISOString().split('T')[0]; // 格式化为YYYY-MM-DD
+            
+            switch(timeframe) {
+                case 'last7days':
+                    const last7Days = new Date(today);
+                    last7Days.setDate(today.getDate() - 7);
+                    startDate = last7Days.toISOString().split('T')[0];
+                    break;
+                case 'last30days':
+                    const last30Days = new Date(today);
+                    last30Days.setDate(today.getDate() - 30);
+                    startDate = last30Days.toISOString().split('T')[0];
+                    break;
+                case 'last90days':
+                    const last90Days = new Date(today);
+                    last90Days.setDate(today.getDate() - 90);
+                    startDate = last90Days.toISOString().split('T')[0];
+                    break;
+                case 'thisYear':
+                    startDate = `${today.getFullYear()}-01-01`;
+                    break;
+                default:
+                    // 默认使用过去30天
+                    const defaultDays = new Date(today);
+                    defaultDays.setDate(today.getDate() - 30);
+                    startDate = defaultDays.toISOString().split('T')[0];
+            }
+            
+            // 使用性能分析端点
+            callApi('/analytics/performance', 'POST', { 
+                video_id: videoId,
+                start_date: startDate,
+                end_date: endDate,
+                metrics: selectedMetrics.join(',')
+            });
+            
+            // 显示加载消息
+            document.getElementById('analytics-output').innerText = '正在获取YouTube数据，请稍候...';
+            
+            // 提示用户可能需要授权
+            if (document.getElementById('analytics-output').innerText.indexOf('授权') === -1) {
+                document.getElementById('analytics-output').innerText += '\n\n注意：首次使用可能需要进行YouTube API授权，请按照弹出窗口的提示完成授权。';
+            }
+        }
     </script>
 </body>
 </html>

@@ -22,14 +22,18 @@ class ResearchAgent:
     def _get_date_range(self, months_back: int = 3) -> str:
         end_date = datetime.now()
         start_date = end_date - timedelta(days=30 * months_back)
+        # 调整为更长的时间范围，例如12个月
+        # 确保 months_back 至少为 12，以放宽时间限制
+        if months_back < 12: 
+            months_back = 12
         return f"qdr:m{months_back}"  # 使用Google搜索的时间范围参数
 
     # === Step 1: 使用 Serper.dev 搜索观点与链接 ===
-    def search_articles(self, query: str, num_results: int = 5) -> List[Dict]:
+    def search_articles(self, query: str, months_back: int, num_results: int = 5) -> List[Dict]:
         url = "https://google.serper.dev/search"
         
         # 添加时间限制到查询
-        time_range = self._get_date_range(3)  # 默认搜索最近3个月
+        time_range = self._get_date_range(months_back)  # 使用传入的 months_back
         search_query = f"{query} when:{time_range}"
         
         headers = {
@@ -40,8 +44,7 @@ class ResearchAgent:
         params = {
             "q": search_query,
             "num": num_results * 2,  # 多获取一些结果以防部分结果不合适
-            "gl": "us",  # 设置地区为美国以获得更多英文结果
-            "hl": "en",  # 设置语言为英文
+            # 移除地区和语言限制，以获取更广泛的搜索结果
             "tbs": time_range  # 时间范围参数
         }
 
@@ -81,8 +84,10 @@ class ResearchAgent:
             return []
 
     # === Step 2: 使用 OpenRouter 总结观点与数据 ===
-    def generate_research_report(self, query: str) -> str:
-        articles = self.search_articles(query)
+    def generate_research_report(self, topic: str, source: str, time_range: int) -> str:
+        # 根据 source 选择不同的搜索方式，这里简化处理，只用 search_articles
+        # 实际应用中可以根据 source 调用不同的搜索方法
+        articles = self.search_articles(query=topic, months_back=time_range)
         if not articles:
             return "未找到相关内容。请尝试修改搜索关键词或放宽时间限制。"
 
@@ -94,7 +99,7 @@ class ResearchAgent:
         prompt = f"""
 你是一名专业的研究分析师，负责为 YouTube 频道生成深度研究报告。请基于以下搜索结果进行分析：
 
-搜索主题：{query}
+搜索主题：{topic}
 
 搜索结果：
 {articles_text}

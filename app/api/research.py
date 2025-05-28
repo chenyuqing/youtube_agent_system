@@ -5,7 +5,9 @@ from ..sdk.research_agent import ResearchAgent
 router = APIRouter()
 
 class ResearchRequest(BaseModel):
-    query: str
+    topic: str
+    source: str
+    time_range: int
 
 class ResearchResponse(BaseModel):
     report: str
@@ -14,7 +16,11 @@ class ResearchResponse(BaseModel):
 async def get_research_report(request: ResearchRequest):
     try:
         agent = ResearchAgent()
-        report = agent.generate_research_report(request.query)
+        report = agent.generate_research_report(
+            topic=request.topic,
+            source=request.source,
+            time_range=request.time_range
+        )
         return ResearchResponse(report=report)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

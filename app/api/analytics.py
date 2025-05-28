@@ -8,8 +8,9 @@ router = APIRouter()
 
 class PerformanceRequest(BaseModel):
     video_id: str
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    metrics: Optional[str] = None
 
 class AudienceRequest(BaseModel):
     video_id: str

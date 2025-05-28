@@ -80,6 +80,46 @@ class ThumbnailAgent:
             raise Exception(f"OpenRouter API请求失败: {response.text}")
 
         return response.json()["choices"][0]["message"]["content"]
+    
+    def get_asset_suggestions(self, design):
+        """根据缩略图设计提取素材建议"""
+        try:
+            # 如果design是字符串（JSON格式），尝试提取关键视觉元素作为素材建议
+            # 这里简单实现，实际应用中可能需要更复杂的解析逻辑
+            suggestions = []
+            
+            # 从设计方案中提取关键词作为素材建议
+            if isinstance(design, str):
+                if "关键视觉元素" in design:
+                    # 简单提取关键视觉元素部分
+                    lines = design.split("\n")
+                    extract_mode = False
+                    for line in lines:
+                        if "关键视觉元素" in line:
+                            extract_mode = True
+                            continue
+                        if extract_mode and line.strip() and "处理" not in line:
+                            if line.startswith("4.") or line.startswith("5."):
+                                extract_mode = False
+                                continue
+                            if "-" in line:
+                                suggestion = line.split("-")[1].strip()
+                                if suggestion and len(suggestion) > 5:
+                                    suggestions.append(suggestion)
+            
+            # 如果没有提取到建议，添加一些默认建议
+            if not suggestions:
+                suggestions = [
+                    "高质量的主题相关图片",
+                    "醒目的图标或符号",
+                    "与主题相关的背景图像",
+                    "考虑使用对比色增强视觉效果"
+                ]
+                
+            return suggestions
+        except Exception as e:
+            # 出错时返回默认建议
+            return ["无法解析设计方案，请手动选择合适素材", str(e)]
 
 # === 示例运行（调试/独立运行用）===
 if __name__ == "__main__":
